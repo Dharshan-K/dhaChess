@@ -1,6 +1,22 @@
-.highlight-white {
-  box-shadow: inset 0 0 3px 3px yellow;
+.highlight-white::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;           /* Reduced from 80% to 25% for a smaller circle */
+  height: 40%;          /* Keeping width and height equal for a perfect circle */
+  transform: translate(-50%, -50%); /* Centers the circle perfectly in the square */
+  background-color: rgba(0, 0, 0, 0.2); /* Changed to semi-transparent black for a grey appearance */
+  border-radius: 50%;   /* Maintains the circular shape */
+  pointer-events: none;
+  z-index: 1;
 }
+
+#board1 .square {
+  position: relative;
+}
+
+
 .highlight-black {
   box-shadow: inset 0 0 3px 3px blue;
 }
