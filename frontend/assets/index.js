@@ -1,4 +1,5 @@
 import { validatePawnMove, generateRookMoves } from "./utils/moves.js";
+import { generateBishopMoves, generateKnightMoves, generateQueenMoves } from "./utils/moves2.js";
 $(function() {
   let selectedSquare = null;
   
@@ -54,12 +55,10 @@ $(function() {
             break;
         case "R":
             moves = generateRookMoves(from, piece, board);
-            console.log("moves", moves)
             if(moves.length == 0){
                 console.log("no moves.")
             }
-            for(let i=0;i<moves.length;i++){
-                
+            for(let i=0;i<moves.length;i++){                
                 if(position[to] != undefined){
                     const toPosition = position[to]
                     if(toPosition[0] == piece[0]){
@@ -75,6 +74,59 @@ $(function() {
                 }
             }
             break;
+        case "N":
+            moves = generateKnightMoves(from, moves, board);
+            for(let i=0;i<moves.length;i++){
+                if(position[to] != undefined){
+                    const toPosition = position[to]
+                    if(toPosition[0] == piece[0]){
+                        console.log("illegal move")
+                        return "illegal move"
+                    } 
+                }
+                if(moves[i]== to){
+                    const newPosition = {...position};
+                    newPosition[to] = newPosition[from];
+                    delete newPosition[from];          
+                    board.position(newPosition);
+                }    
+            }            
+            break;
+        case "B":
+            moves = generateBishopMoves(from, board);
+            for(let i=0;i<moves.length;i++){
+                if(position[to] != undefined){
+                    const toPosition = position[to]
+                    if(toPosition[0] == piece[0]){
+                        console.log("illegal move")
+                        return "illegal move"
+                    } 
+                }
+                if(moves[i]== to){
+                    const newPosition = {...position};
+                    newPosition[to] = newPosition[from];
+                    delete newPosition[from];          
+                    board.position(newPosition);
+                }    
+            }       
+            break;
+        case "Q":
+            moves = generateQueenMoves(from, board.position());
+            for(let i=0;i<moves.length;i++){
+                if(position[to] != undefined){
+                    const toPosition = position[to]
+                    if(toPosition[0] == piece[0]){
+                        console.log("illegal move")
+                        return "illegal move"
+                    } 
+                }
+                if(moves[i]== to){
+                    const newPosition = {...position};
+                    newPosition[to] = newPosition[from];
+                    delete newPosition[from];          
+                    board.position(newPosition);
+                }    
+            }           
         default:
             console.log("Move is not allowed.")
         }
@@ -117,7 +169,44 @@ $(function() {
             for(let i=0;i<moves.length;i++){
                 highlightSquare(moves[i])
             }
-            break;        
+            break;     
+        case "wN":
+            moves = generateKnightMoves(square);
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "wN":
+            moves = generateKnightMoves(square);
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "wB":
+            moves = generateBishopMoves(square, board.position())
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "bB":
+            moves = generateBishopMoves(square, board.position())
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "bQ":
+            moves = generateQueenMoves(square, board.position());
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "wQ":
+            moves = generateQueenMoves(square, board.position());
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+
         default:
             console.log("square is empty.")
     }
