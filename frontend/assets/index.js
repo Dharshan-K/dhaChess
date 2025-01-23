@@ -1,5 +1,5 @@
 import { validatePawnMove, generateRookMoves } from "./utils/moves.js";
-import { generateBishopMoves, generateKnightMoves, generateQueenMoves } from "./utils/moves2.js";
+import { generateBishopMoves, generateKingMoves, generateKnightMoves, generateQueenMoves } from "./utils/moves2.js";
 $(function() {
   let selectedSquare = null;
   
@@ -19,7 +19,7 @@ $(function() {
         if (board.position()[square]) {
           console.log("selectedSquare", selectedSquare)    
           selectedSquare = square;
-          highlightSquare(square);
+        //   highlightSquare(square);
         }
       } else {
           makeMove(selectedSquare, square);
@@ -99,10 +99,11 @@ $(function() {
                     const toPosition = position[to]
                     if(toPosition[0] == piece[0]){
                         console.log("illegal move")
-                        return "illegal move"
+                        return 
                     } 
                 }
                 if(moves[i]== to){
+                    console.log("move to", moves[i], to, i)
                     const newPosition = {...position};
                     newPosition[to] = newPosition[from];
                     delete newPosition[from];          
@@ -117,7 +118,7 @@ $(function() {
                     const toPosition = position[to]
                     if(toPosition[0] == piece[0]){
                         console.log("illegal move")
-                        return "illegal move"
+                        return 
                     } 
                 }
                 if(moves[i]== to){
@@ -126,7 +127,26 @@ $(function() {
                     delete newPosition[from];          
                     board.position(newPosition);
                 }    
-            }           
+            }    
+            break;
+        case "K":
+            moves = generateKingMoves(from, board.position());
+            for(let i=0;i<moves.length;i++){
+                if(position[to] != undefined){
+                    const toPosition = position[to]
+                    if(toPosition[0] == piece[0]){
+                        console.log("illegal move")
+                        return 
+                    } 
+                }
+                if(moves[i]== to){
+                    const newPosition = {...position};
+                    newPosition[to] = newPosition[from];
+                    delete newPosition[from];          
+                    board.position(newPosition);
+                }    
+            }    
+            break;  
         default:
             console.log("Move is not allowed.")
         }
@@ -206,7 +226,18 @@ $(function() {
                 highlightSquare(moves[i])
             }
             break;
-
+        case "wK":
+            moves = generateKingMoves(square, board.position());
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
+        case "bK":
+            moves = generateKingMoves(square, board.position());
+            for(let i=0;i<moves.length;i++){
+                highlightSquare(moves[i])
+            }
+            break;
         default:
             console.log("square is empty.")
     }
