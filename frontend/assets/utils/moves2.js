@@ -1,13 +1,27 @@
-function generateKnightMoves(position){
+function generateKnightMoves(position, board){
+  const directions = [
+    [1,-2],[2,-1],[2,1],[1,2],[-1,2],[-1,-2],[-2,1],[-2,-1]
+  ]
   let moves = new Array();
-  moves.push(String.fromCharCode(position.charCodeAt(0)+1) + (parseInt(position[1]) +2))
-  moves.push(String.fromCharCode(position.charCodeAt(0)-1) + (parseInt(position[1]) +2))
-  moves.push(String.fromCharCode(position.charCodeAt(0)+1) + (parseInt(position[1]) -2))
-  moves.push(String.fromCharCode(position.charCodeAt(0)-1) + (parseInt(position[1]) -2))
-  moves.push(String.fromCharCode(position.charCodeAt(0)+2) + (parseInt(position[1]) +1))
-  moves.push(String.fromCharCode(position.charCodeAt(0)-2) + (parseInt(position[1]) +1))
-  moves.push(String.fromCharCode(position.charCodeAt(0)+2) + (parseInt(position[1]) -1))
-  moves.push(String.fromCharCode(position.charCodeAt(0)-2) + (parseInt(position[1]) -1))
+  const file = position.charCodeAt(0);
+  const rank = parseInt(position[1])
+
+  for(const [fileOffset, rankOffset] of directions){
+    let currentFile = file + fileOffset;
+    let currentRank = rank + rankOffset;
+    const newPosition = String.fromCharCode(currentFile) + currentRank;
+
+    if (currentFile < 97 || currentFile > 104 || currentRank < 1 || currentRank > 8) {
+      continue;
+    }
+    if(board[newPosition] != undefined){
+      if(board[newPosition][0] != board[position][0]){
+        moves.push(newPosition)
+      }
+      continue;
+    }
+    moves.push(newPosition);    
+  }
   return moves;
 }
 
@@ -32,7 +46,7 @@ function generateBishopMoves(position, board) {
         currentRank += rankOffset;
         const newPosition = String.fromCharCode(currentFile) + currentRank;          
         if (currentFile < 97 || currentFile > 104 || currentRank < 1 || currentRank > 8) {
-            break;
+          break;
         }          
         if (board[newPosition] != undefined) {  
           break;
@@ -65,8 +79,12 @@ function generateQueenMoves(position, board){
         break;
       }
       if(board[newPosition] != undefined){
+        if(board[newPosition][0] != board[position][0]){
+          moves.push(newPosition)
+        }
         break;
       }
+      
       moves.push(newPosition)
     }
   }
@@ -91,6 +109,9 @@ function generateKingMoves(position, board){
     const newPosition = String.fromCharCode(currentFile) + currentRank;
 
     if(board[newPosition] != undefined){
+      if(board[newPosition][0] != board[position][0]){
+        moves.push(newPosition)
+      }
       continue;
     }
 
