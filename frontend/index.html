@@ -3,33 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet"
-      href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
-      integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
-      crossorigin="anonymous">
-  <link rel="stylesheet" href="./assets/index.css">
+  <title>User Sign Up & Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+    .form-container {
+      width: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .link {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <div id="board1" style="width: 400px"></div>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
-  crossorigin="anonymous"></script>
-
-  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
-  integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
-  crossorigin="anonymous"></script>
-
-  <script type="module" src="./assets/index.js"></script>
-  <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js"></script>
+  <div class="form-container">
+    <h2 id="form-title">Sign Up</h2>
+    <form id="user-form">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Submit</button>
+    </form>
+    <div class="link">
+      <a href="#" id="toggle-link">Already have an account? Login</a>
+    </div>
+  </div>
 
   <script>
+    const formTitle = document.getElementById("form-title");
+    const userForm = document.getElementById("user-form");
+    const toggleLink = document.getElementById("toggle-link");
+    let isSignUp = true;
 
+    toggleLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      isSignUp = !isSignUp;
+      formTitle.textContent = isSignUp ? "Sign Up" : "Login";
+      toggleLink.textContent = isSignUp
+        ? "Already have an account? Login"
+        : "Don't have an account? Sign Up";
+    });
+
+    userForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const endpoint = isSignUp
+        ? "https://dhachess.onrender.com/api/register"
+        : "https://dhachess.onrender.com/api/login";
+
+      console.log("endpoint", endpoint);
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const { message } = await response.json();
+        localStorage.setItem("username", username)
+        alert(message);
+        window.location.href = isSignUp ? "/afterSignUp.html" : "/afterSignUp.html";
+      } else {
+        const { error } = await response.json();
+        alert(error || "Something went wrong!");
+      }
+    });
   </script>
 </body>
 </html>
-
-
-
-

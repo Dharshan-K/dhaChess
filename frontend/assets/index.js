@@ -10,7 +10,7 @@ $(async function() {
   let winnerMessage = "Winner status";
 
 
-  const socket = io("http://localhost:3001");
+  const socket = io("https://dhachess.onrender.com");
     
   document.getElementById("playWithPlayer").addEventListener("click", () => {
     socket.emit("createGame", {
