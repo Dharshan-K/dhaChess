@@ -12,7 +12,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors:{
-    origin: "https://dha-chess.vercel.app/",
+    origin: "https://dha-chess.vercel.app",
     methods: ["GET","POST"],
     credentials: true
   }
@@ -30,7 +30,7 @@ const redisClient = createClient({
 redisClient.on("error", (err) => console.error("Redis Client Error:", err));
 
 app.use(cors({
-	origin: 'https://dha-chess.vercel.app/',  
+	origin: 'https://dha-chess.vercel.app',  
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	credentials: true 
 }));
